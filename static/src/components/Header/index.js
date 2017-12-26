@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AppBar from 'material-ui/AppBar';
-import LeftNav from 'material-ui/Drawer';
+import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
@@ -65,7 +65,9 @@ export class Header extends Component {
     render() {
         return (
             <header>
-                <LeftNav open={this.state.open}>
+                <Drawer open={this.state.open}
+                 docked={false}
+                onRequestChange={(open) => this.setState({open})}>
                     {
                         !this.props.isAuthenticated ?
                             <div>
@@ -88,7 +90,7 @@ export class Header extends Component {
                                 </MenuItem>
                             </div>
                     }
-                </LeftNav>
+                </Drawer>
                 <AppBar
                   title="Dimpull"
                   onLeftIconButtonTouchTap={() => this.openNav()}

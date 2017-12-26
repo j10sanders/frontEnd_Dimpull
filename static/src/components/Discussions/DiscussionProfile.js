@@ -11,23 +11,33 @@ class DiscussionProfile extends React.Component {
       host: 'waiting...', 
       image: 'http://support.cashbackcloud.co/wp-content/uploads/2017/01/add-on-force-pending-referrals.png',
       description: 'waiting...',
+      anonymous_phone_number: '+1-000-000-0000',
       }
     }
 
-    componentWillMount(){
+    componentDidMount(){
+      console.log(this.props.location.search, "MOUNTED")
       axios.get(`${process.env.REACT_APP_USERS_SERVICE_URL}/conversations${this.props.location.search}`)
         .then((response) => 
+          // console.log("GOT A RESPONSE", response)
           this.setState({host: response.data.host,
             image: response.data.image,
-            description: response.data.description
-          }))
+            description: response.data.description,
+            anonymous_phone_number: response.data.anonymous_phone_number,
+          }
+          ))
         .catch(function (error) {
           console.log(error)
         })
+      // this.setState({host: this.props.location.search.host,
+      //       image: this.props.location.search.image,
+      //       description: this.props.location.search.description
+      //     })
     }
 
 
   render() {
+    console.log(this.props)
     return (
       <Card>
       <CardHeader
@@ -40,13 +50,15 @@ class DiscussionProfile extends React.Component {
       >
         <img src={this.state.image} alt="" />
       </CardMedia>
-      <CardTitle title={this.state.host} subtitle="Card subtitle" />
+      <CardTitle title={this.state.host} subtitle={this.state.anonymous_phone_number} />
       <CardText>
         {this.state.description}
       </CardText>
       <CardActions>
-        <FlatButton label="Action1" />
-        <FlatButton label="Action2" />
+        <FlatButton label="Contact" onClick={() => browserHistory.push({
+        pathname: `/discussionProfile`,
+        search: `?id=${id}`})} />
+        <FlatButton label="Save as favorite" />
       </CardActions>
     </Card>
   );
